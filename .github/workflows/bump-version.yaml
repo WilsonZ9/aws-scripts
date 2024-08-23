@@ -40,7 +40,7 @@ jobs:
       - name: Push changes to branch
         id: push_changes
         run: |
-          git push origin HEAD:bump-version
+          git push origin HEAD:ci-update-version-${{ steps.tag.outputs.tag }}
   
       - name: Create Pull Request
         id: create_pr
