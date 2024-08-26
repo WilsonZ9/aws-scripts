@@ -10,7 +10,7 @@ on:
 jobs:
   bump-version:
     name: Bump Release Version
-    if: github.triggering_actor != 'github-actions[bot]' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event.pull_request.title != 'Bot - auto update version' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,9 +55,9 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "CI: auto update version ${{ steps.tag.outputs.new_tag }}"
-          branch: ci-update-version-${{ steps.tag.outputs.new_tag }}
-          title: "CI: Auto update version"
+          commit-message: "Bot - auto update version ${{ steps.tag.outputs.new_tag }}"
+          branch: bot-update-version-${{ steps.tag.outputs.new_tag }}
+          title: "Bot - auto update version"
           body: "This PR bumps the version of package.json and package-lock.json to ${{ steps.tag.outputs.new_tag }}"
       - uses: hmarr/auto-approve-action@v4
         with:
@@ -71,3 +71,5 @@ jobs:
           PULL_REQUEST: ${{ steps.create_pr.outputs.pull-request-number }}
           MERGE_LABELS: ""
           MERGE_METHOD: "squash"
+          MERGE_ERROR_FAIL: "true"
+          MERGE_READY_STATE: "clean,has_hooks,unknown,unstable,blocked"
