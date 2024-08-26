@@ -1,0 +1,17 @@
+{
+    "LABEL": {
+      "name": "title needs formatting",
+      "color": "EEEEEE"
+    },
+    "CHECKS": {
+      "prefixes": [
+        "NO-JIRA: "
+      ],
+      "regexp": "^(feat:|fix:|break:|CI:)\\W+(IV-[0-9]+)\\W+(.+)$"
+    },
+    "MESSAGES": {
+      "success": "PR title is formatted correctly",
+      "failure": "PR title is not formatted correctly",
+      "notice": ""
+    }
+  }
