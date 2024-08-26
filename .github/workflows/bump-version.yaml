@@ -10,7 +10,7 @@ on:
 jobs:
   bump-version:
     name: Bump Release Version
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && !github.event.pull_request.title == 'CI: Auto update version'
+    if: github.triggering_actor == 'github-actions[bot]' && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
