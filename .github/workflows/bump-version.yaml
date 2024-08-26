@@ -62,23 +62,10 @@ jobs:
       - uses: hmarr/auto-approve-action@v4
         with:
           pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          github-token: ${{ secrets.AUTO_APPROVE_TOKEN }}
           review-message: "Auto approved automated PR"
-      - name: Merge Pull Request
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const pr = await github.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              head: 'ci-update-version-${{ steps.tag.outputs.tag }}'
-            });
-            if (pr.data.length > 0) {
-              await github.pulls.merge({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pr.data[0].number,
-                merge_method: 'squash'
-              });
-            }
+      - name: Merge auto PR
+        uses: "pascalgn/automerge-action@v0.16.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          PULL_REQUEST: ${{ steps.create_pr.outputs.pull-request-number }}
