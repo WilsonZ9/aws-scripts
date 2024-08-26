@@ -59,7 +59,10 @@ jobs:
           branch: ci-update-version-${{ steps.tag.outputs.tag }}
           title: "CI: update version ${{ steps.tag.outputs.tag }}"
           body: "This PR bumps the version of package.json and package-lock.json to ${{ steps.tag.outputs.tag }}"
-
+      - uses: hmarr/auto-approve-action@v4
+        with:
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          review-message: "Auto approved automated PR"
       - name: Merge Pull Request
         uses: actions/github-script@v4
         with:
