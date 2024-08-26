@@ -39,26 +39,26 @@ jobs:
           automatic_release_tag: ${{ steps.tag.outputs.new_tag }}
       - name: Bump package.json version
         run: |
-          npm version ${{ steps.tag.outputs.tag }} --no-git-tag-version
+          npm version ${{ steps.tag.outputs.new_tag }} --no-git-tag-version
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add package.json package-lock.json
-          git commit -m 'CI: update version to ${{ steps.tag.outputs.tag }}'
+          git commit -m 'CI: update version to ${{ steps.tag.outputs.new_tag }}'
 
       - name: Push changes to branch
         id: push_changes
         run: |
-          git push origin HEAD:ci-update-version-${{ steps.tag.outputs.tag }}
+          git push origin HEAD:ci-update-version-${{ steps.tag.outputs.new_tag }}
 
       - name: Create Pull Request
         id: create_pr
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "CI: update version ${{ steps.tag.outputs.tag }}"
-          branch: ci-update-version-${{ steps.tag.outputs.tag }}
-          title: "CI: update version ${{ steps.tag.outputs.tag }}"
-          body: "This PR bumps the version of package.json and package-lock.json to ${{ steps.tag.outputs.tag }}"
+          commit-message: "CI: update version ${{ steps.tag.outputs.new_tag }}"
+          branch: ci-update-version-${{ steps.tag.outputs.new_tag }}
+          title: "CI: update version ${{ steps.tag.outputs.new_tag }}"
+          body: "This PR bumps the version of package.json and package-lock.json to ${{ steps.tag.outputs.new_tag }}"
       - uses: hmarr/auto-approve-action@v4
         with:
           pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
