@@ -7,7 +7,7 @@
       "prefixes": [
         "NO-JIRA: "
       ],
-      "regexp": "^(feat:|fix:|break:|CI:)\\W+(IV-[0-9]+)\\W+(.+)$"
+      "regexp": "^(feat:|fix:|break:)\\W+(IV-[0-9]+)\\W+(.+)$"
     },
     "MESSAGES": {
       "success": "PR title is formatted correctly",
