@@ -70,3 +70,4 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           PULL_REQUEST: ${{ steps.create_pr.outputs.pull-request-number }}
           MERGE_LABELS: ""
+          MERGE_METHOD: "squash"
