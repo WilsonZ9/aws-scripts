@@ -26,35 +26,45 @@ const scanTable = async (params) => {
                     for (let i = 0; i < item.campaignEnrollments.length; i++) {
                         const enrollment = item.campaignEnrollments[i];
                         if (enrollment.campaignConfig && enrollment.campaignType === "appointment-reminders") {
+                            let newAppointmentTypeGlobalSettings;
                             if (!enrollment.campaignConfig.appointmentTypeGlobalSettings) {
-                                enrollment.campaignConfig.appointmentTypeGlobalSettings = {
+                                newAppointmentTypeGlobalSettings = {
                                     bloodwork: {
                                         costType: "range",
-                                        minCost: "80",
-                                        maxCost: "200"
+                                        minCost: 80,
+                                        maxCost: 200
                                     }
                                 };
-
-                                const updateParams = {
-                                    TableName: tableName,
-                                    Key: {
-                                        practiceRowKey: item.practiceRowKey
-                                    },
-                                    UpdateExpression: `set campaignEnrollments[${i}].campaignConfig.appointmentTypeGlobalSettings = :newSetting`,
-                                    ExpressionAttributeValues: {
-                                        ':newSetting': enrollment.campaignConfig.appointmentTypeGlobalSettings
+                            } else {
+                                newAppointmentTypeGlobalSettings = {
+                                    bloodwork: {
+                                        costType: enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.costType,
+                                        minCost: enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.minCost ? Number(enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.minCost) : undefined,
+                                        maxCost: enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.maxCost ? Number(enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.maxCost) : undefined,
+                                        singleCost: enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.singleCost ? Number(enrollment.campaignConfig.appointmentTypeGlobalSettings.bloodwork.singleCost) : undefined,
                                     }
                                 };
-
-                                dynamodb.update(updateParams, (updateErr, updateData) => {
-                                    if (updateErr) {
-                                        console.error('Error updating item:', item.practiceRowKey);
-                                    } else {
-                                        count++;
-                                        console.log(`Item updated successfully:${count}`, item.practiceRowKey);
-                                    }
-                                });
                             }
+                            enrollment.campaignConfig.appointmentTypeGlobalSettings = newAppointmentTypeGlobalSettings
+                            const updateParams = {
+                                TableName: tableName,
+                                Key: {
+                                    practiceRowKey: item.practiceRowKey
+                                },
+                                UpdateExpression: `set campaignEnrollments[${i}].campaignConfig.appointmentTypeGlobalSettings = :newSetting`,
+                                ExpressionAttributeValues: {
+                                    ':newSetting': enrollment.campaignConfig.appointmentTypeGlobalSettings
+                                }
+                            };
+
+                            dynamodb.update(updateParams, (updateErr, updateData) => {
+                                if (updateErr) {
+                                    console.error('Error updating item:', item.practiceRowKey);
+                                } else {
+                                    count++;
+                                    console.log(`Item updated successfully:${count}`, item.practiceRowKey);
+                                }
+                            });
 
                         }
                     }
