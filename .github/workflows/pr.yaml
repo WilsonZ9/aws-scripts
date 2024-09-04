@@ -16,7 +16,15 @@ jobs:
     name: Check PR Title
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: thehanimo/pr-title-checker@v1.4.2
         with:
           GITHUB_TOKEN: ${{ github.token }}
           configuration_path: ".github/pr-title-checker-config.json"
+      - uses: act10ns/slack@v2
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          status: ${{ job.status }}
+          config: .github/slack.yml
+        if: always()

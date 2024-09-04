@@ -73,3 +73,10 @@ jobs:
           MERGE_METHOD: "squash"
           MERGE_ERROR_FAIL: "true"
           MERGE_READY_STATE: "clean,has_hooks,unknown,unstable,blocked"
+      - uses: act10ns/slack@v2
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          status: ${{ job.status }}
+          config: .github/slack.yml
+        if: always()
