@@ -47,6 +47,7 @@ jobs:
       actions: write
       contents: read
     steps:
+      - uses: actions/checkout@v4
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
