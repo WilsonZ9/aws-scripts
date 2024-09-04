@@ -24,9 +24,6 @@ fields:
   - title: Branch
     value: "{{branch}}"
     short: true
-  - title: Job Matrix
-    value: "{{#if jobMatrix}}{{#each jobMatrix}}{{@key}}: {{this}}{{/each}}{{else}} N/A {{/if}}"
-    short: false
 
 footer: >-
   <{{repositoryUrl}}|{{repositoryName}}> {{workflow}} #{{runNumber}}

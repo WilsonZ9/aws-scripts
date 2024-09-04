@@ -15,9 +15,6 @@ jobs:
   check-pr-title:
     name: Check PR Title
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
     steps:
       - uses: actions/checkout@v4
       - uses: thehanimo/pr-title-checker@v1.4.2
@@ -30,5 +27,4 @@ jobs:
         with:
           status: ${{ job.status }}
           config: .github/slack.yml
-          matrix: ${{ toJson(matrix) }}
         if: always()
