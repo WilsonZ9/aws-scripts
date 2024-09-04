@@ -1,6 +1,6 @@
-username: PR Workflow
+username: Github Actions
 
-pretext: PR Workflow {{jobName}} is {{jobStatus}}.
+pretext: "{{jobName}} is {{jobStatus}}."
 title: GitHub Actions
 title_link: https://github.com/WilsonZ9/aws-scripts/actions
 
@@ -12,6 +12,9 @@ fallback: |-
   [GitHub] {{workflow}} #{{runNumber}} {{jobName}} is {{jobStatus}}
 
 fields:
+  - title: Job Matrix
+    value: "{{#if jobMatrix}}{{#each jobMatrix}}{{@key}}: {{this}}{{/each}}{{else}}N/A{{/if}}"
+    short: false
   - title: Job
     value: "{{jobName}}"
     short: true
