@@ -1,0 +1,45 @@
+username: PR Workflow
+
+pretext: PR Workflow {{jobName}} is {{jobStatus}}.
+title: GitHub Actions
+title_link: https://github.com/WilsonZ9/aws-scripts/actions
+
+text: |
+  *<{{workflowRunUrl}}|Workflow: _{{workflow}}_, job: _{{jobName}}_, triggered by _{{eventName}}_>*
+  {{#if description}}<{{diffUrl}}|`{{diffRef}}`> - {{description}}{{/if}}
+
+fallback: |-
+  [GitHub] {{workflow}} #{{runNumber}} {{jobName}} is {{jobStatus}}
+
+fields:
+  - title: Job
+    value: "{{jobName}}"
+    short: true
+  - title: Actor
+    value: "{{actor}}"
+    short: true
+  - title: Job Status
+    value: "{{jobStatus}}"
+    short: true
+  - title: Branch
+    value: "{{branch}}"
+    short: true
+  - title: Job Matrix
+    value: "{{#if jobMatrix}}{{#each jobMatrix}}{{@key}}: {{this}}{{/each}}{{else}} N/A {{/if}}"
+    short: false
+
+footer: >-
+  <{{repositoryUrl}}|{{repositoryName}}> {{workflow}} #{{runNumber}}
+
+colors:
+  success: "#4dd61d"
+  failure: "#d6231d"
+  cancelled: "#655d5c"
+  default: "#000000"
+
+icons:
+  success: ":white_check_mark:"
+  failure: ":grimacing:"
+  cancelled: ":x:"
+  skipped: ":heavy_minus_sign:"
+  default: ":interrobang:"

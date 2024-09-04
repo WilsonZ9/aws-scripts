@@ -1,5 +1,6 @@
 org="IDEXX"
-repo="poe-mobile-service-graphql"
+# repo="poe-mobile-service-graphql"
+repo="poe-appointments"
 
 # Get workflow IDs with status "disabled_manually"
 workflow_ids=($(gh api repos/$org/$repo/actions/workflows --paginate | jq '.workflows[] | select(.["state"] | contains("disabled_manually")) | .id'))
